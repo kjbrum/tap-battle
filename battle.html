@@ -30,7 +30,7 @@
             </p>
         </form> -->
 
-        <div class="connected">Remote not connected...</div>
+        <div class="connected">Remote not connected...<br>Visit http://tap-battle.herokuapp.com/remote on your mobile device</div>
         <div class="bar"></div>
         <h3 class="success">You Win!</h3>
 
@@ -46,9 +46,9 @@
 
             socket.on('remoteConnected', function(data) {
                 if (data) {
-                    $('.connected').text('Remote connected...');
+                    $('.connected').html('Remote connected...');
                 } else {
-                    $('.connected').text('Remote not connected...');
+                    $('.connected').html('Remote not connected...<br>Visit http://tap-battle.herokuapp.com/remote on your mobile device');
                 }
             });
 
@@ -64,7 +64,7 @@
             });
 
             socket.on('notification', function(data) {
-                $('.notification .message').text(data.message);
+                $('.notification .message').html(data.message);
             });
 
             $('form').submit(function(e) {

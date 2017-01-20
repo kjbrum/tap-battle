@@ -48,7 +48,6 @@ io.on('connection', function(client) {
 
     // Register a tap event
     client.on('tap', function(tap) {
-        console.log('tap');
         io.emit('tap', tap);
     });
 
