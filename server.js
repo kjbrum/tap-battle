@@ -18,23 +18,47 @@ app.get('/remote', function(req, res, next) {
 
 server.listen(port);
 
+var users = [];
+
 io.on('connection', function(client) {
     console.log('connected');
 
-    client.on('createUser', function(data) {
-        console.log('User created: ' + data);
+    // Create a user
+    client.on('createUser', function(username) {
+        console.log(users);
+        var exists = false;
+        if (users.length) {
+            users.forEach(function(user) {
+                if (user.username == username) {
+                    exists = true;
+                }
+            });
+        }
+
+        if (!exists) {
+            users.push({ username: username });
+            console.log('User created: ' + username);
+            io.emit('notification', { message: 'Success: User ' + username + ' successfully created!' });
+        } else {
+            console.log('User exists: ' + username);
+            io.emit('notification', { message: 'Error: User ' + username + ' already exists!' });
+        }
+
     });
 
-    client.on('tap', function(data) {
+    // Register a tap event
+    client.on('tap', function(tap) {
         console.log('tap');
-        io.emit('tap', true);
+        io.emit('tap', tap);
     });
 
+    // Remote is connected
     client.on('remoteConnected', function(data) {
         console.log('remoteConnected: ' + data);
         io.emit('remoteConnected', data);
     });
 
+    // Client disconnects
     client.on('disconnect', function(data) {
         console.log('disconnected');
         io.emit('remoteConnected', false);
