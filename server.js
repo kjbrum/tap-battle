@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
+var port = process.env.PORT || 8080;
 
 app.get('/', function(req, res, next) {
     res.sendFile(__dirname + '/index.html');
@@ -15,7 +16,7 @@ app.get('/remote', function(req, res, next) {
     res.sendFile(__dirname + '/remote.html');
 });
 
-server.listen(3000);
+server.listen(port);
 
 io.on('connection', function(client) {
     client.on('createUser', function(data) {
