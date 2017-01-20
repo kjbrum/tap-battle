@@ -25,7 +25,6 @@
             var url = window.location.href;
             var path = window.location.pathname;
             var re = new RegExp(path,"g");
-            console.log(url.replace(re, ''));
             var socket = io.connect(url.replace(re, ''));
 
             $('.tap-zone').click(function(e) {

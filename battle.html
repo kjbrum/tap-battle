@@ -36,14 +36,11 @@
             var url = window.location.href;
             var path = window.location.pathname;
             var re = new RegExp(path,"g");
-            console.log(url.replace(re, ''));
             var socket = io.connect(url.replace(re, ''));
 
             var width = 0;
 
             socket.on('remoteConnected', function(data) {
-                console.log('Remote connected: ' + data);
-
                 if (data) {
                     $('.connected').text('Remote connected...');
                 } else {
@@ -52,13 +49,11 @@
             });
 
             socket.on('tap', function(data) {
-                console.log('tap');
                 if (width == 100) {
                     $('.bar').hide();
                     $('.success').fadeIn();
                 } else {
                     width = width + 2;
-                    console.log(width);
                     $('.bar').css('width', width + 'vw');
                     $('body').css('background', getRandomColor());
                 }
