@@ -4,7 +4,7 @@
   "description": "Battle your friends and see whose a better tapper.",
   "main": "app.js",
   "scripts": {
-    "dev": "node app.js"
+    "start": "node app.js"
   },
   "author": "Kyle Brumm <kjbrumm@gmail.com> (http://kylebrumm.com)",
   "license": "ISC",
