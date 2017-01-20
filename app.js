@@ -15,7 +15,7 @@ app.get('/remote', function(req, res, next) {
     res.sendFile(__dirname + '/remote.html');
 });
 
-server.listen(3000);
+server.listen(80);
 
 io.on('connection', function(client) {
     client.on('createUser', function(data) {
