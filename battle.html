@@ -17,30 +17,34 @@
     <body>
         <h1>Tap Battle</h1>
 
-        <form>
+        <!-- <form>
             <p>
                 <label>Username<br>
                     <input class="username" type="text">
                 </label>
                 <input type="submit" value="Send">
             </p>
-        </form>
+        </form> -->
 
-        <div class="connected"></div>
+        <div class="connected">Remote not connected...</div>
         <div class="bar"></div>
         <h3 class="success">You Win!</h3>
 
         <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
         <script src="/socket.io/socket.io.js"></script>
         <script>
-            var socket = io.connect('https://tap-battle.herokuapp.com');
+            var url = window.location.href;
+            var path = window.location.pathname;
+            var re = new RegExp(path,"g");
+            console.log(url.replace(re, ''));
+            var socket = io.connect(url.replace(re, ''));
 
             var width = 0;
 
             socket.on('remoteConnected', function(data) {
-                console.log('Remote connected:');
-                console.log(data);
-                if (data.connected) {
+                console.log('Remote connected: ' + data);
+
+                if (data) {
                     $('.connected').text('Remote connected...');
                 } else {
                     $('.connected').text('Remote not connected...');

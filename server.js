@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 3000;
 
 app.get('/', function(req, res, next) {
     res.sendFile(__dirname + '/index.html');
@@ -19,18 +19,24 @@ app.get('/remote', function(req, res, next) {
 server.listen(port);
 
 io.on('connection', function(client) {
+    console.log('connected');
+
     client.on('createUser', function(data) {
         console.log('User created: ' + data);
     });
 
-    client.on('tap', function(client) {
+    client.on('tap', function(data) {
+        console.log('tap');
         io.emit('tap', true);
     });
 
-    io.emit('remoteConnected', { connected: true });
+    client.on('remoteConnected', function(data) {
+        console.log('remoteConnected: ' + data);
+        io.emit('remoteConnected', data);
+    });
 
-    client.on('disconnect', function(client) {
+    client.on('disconnect', function(data) {
         console.log('disconnected');
-        io.emit('remoteConnected', { connected: false });
+        io.emit('remoteConnected', false);
     });
 });

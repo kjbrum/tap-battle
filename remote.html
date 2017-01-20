@@ -22,16 +22,18 @@
         <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
         <script src="/socket.io/socket.io.js"></script>
         <script>
-            var socket = io.connect('https://tap-battle.herokuapp.com');
+            var url = window.location.href;
+            var path = window.location.pathname;
+            var re = new RegExp(path,"g");
+            console.log(url.replace(re, ''));
+            var socket = io.connect(url.replace(re, ''));
 
-            socket.on('remoteConnected', function(data) {
-                if (data.connected) {
-                    $('.tap-zone').click(function(e) {
-                        e.preventDefault();
-                        socket.emit('tap', true);
-                    });
-                }
+            $('.tap-zone').click(function(e) {
+                e.preventDefault();
+                socket.emit('tap', true);
             });
+
+            socket.emit('remoteConnected', true);
         </script>
     </body>
 </html>
