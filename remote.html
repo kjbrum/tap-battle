@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Battle | Tap Battle</title>
+        <style>
+            body {
+                margin: 0;
+            }
+
+            .tap-zone {
+                position: absolute;
+                width: 100vw;
+                height: 100vh;
+                background: black;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="tap-zone"></div>
+        <div class="username"></div>
+
+        <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            var socket = io.connect('192.168.0.17:3000');
+
+            socket.on('remoteConnected', function(data) {
+                if (data.connected) {
+                    $('.tap-zone').click(function(e) {
+                        e.preventDefault();
+                        socket.emit('tap', true);
+                    });
+                }
+            });
+        </script>
+    </body>
+</html>

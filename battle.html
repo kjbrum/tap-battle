@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Battle | Tap Battle</title>
+        <style>
+            .bar {
+                width: 0vw;
+                height: 100px;
+                background: black;
+                transition: 0.3s ease-in-out;
+            }
+            .success {
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Tap Battle</h1>
+
+        <form>
+            <p>
+                <label>Username<br>
+                    <input class="username" type="text">
+                </label>
+                <input type="submit" value="Send">
+            </p>
+        </form>
+
+        <div class="connected"></div>
+        <div class="bar"></div>
+        <h3 class="success">You Win!</h3>
+
+        <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            var socket = io.connect('192.168.0.17:3000');
+
+            var width = 0;
+
+            socket.on('remoteConnected', function(data) {
+                console.log('Remote connected:');
+                console.log(data);
+                if (data.connected) {
+                    $('.connected').text('Remote connected...');
+                } else {
+                    $('.connected').text('Remote not connected...');
+                }
+            });
+
+            socket.on('tap', function(data) {
+                console.log('tap');
+                if (width == 100) {
+                    $('.bar').hide();
+                    $('.success').fadeIn();
+                } else {
+                    width = width + 2;
+                    console.log(width);
+                    $('.bar').css('width', width + 'vw');
+                    $('body').css('background', getRandomColor());
+                }
+            });
+
+            $('form').submit(function(e) {
+                e.preventDefault();
+                var username = $('.username').val();
+
+                // Clear the value
+                $('.username').val('');
+
+                // Send the opponent
+                socket.emit('createUser', username);
+            });
+
+            function getRandomColor() {
+                var letters = '0123456789ABCDEF';
+                var color = '#';
+                for (var i = 0; i < 6; i++ ) {
+                    color += letters[Math.floor(Math.random() * 16)];
+                }
+                return color;
+            }
+        </script>
+    </body>
+</html>
